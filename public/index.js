@@ -1,7 +1,7 @@
-import * as THREE from "../three/build/three.module.js";
-import { ColladaLoader } from "../three/examples/jsm/loaders/ColladaLoader.js";
-// import * as THREE from "https://unpkg.com/three/build/three.module.js";
-// import { ColladaLoader } from "https://threejs.org/examples/jsm/loaders/ColladaLoader.js";
+// import * as THREE from "../three/build/three.module.js";
+// import { ColladaLoader } from "../three/examples/jsm/loaders/ColladaLoader.js";
+import * as THREE from "https://unpkg.com/three/build/three.module.js";
+import { ColladaLoader } from "https://threejs.org/examples/jsm/loaders/ColladaLoader.js";
 
 let renderer = null;
 let scene = null;
@@ -9,7 +9,7 @@ let camera = null;
 let model = null;
 let controller = null;
 let playerVector = null;
-export let exportValue = null;
+let exportValue = null;
 const socket = io.connect("http://1d6d078a5d4e.ngrok.io/");
 
 const initScene = (gl, session) => {
@@ -179,6 +179,7 @@ function placeObject() {
 
     scene.add(model);
     controller.removeEventListener("select", placeObject);
+    socket.emit("getPosition", exportValue);
   }
 }
 
@@ -202,4 +203,4 @@ function onXRFrame(t, frame) {
 
 checkXR(); //브라우저가 로딩되면 checkXR을 실행
 
-socket.emit("hello", exportValue);
+// socket.emit("getPosition", exportValue);
