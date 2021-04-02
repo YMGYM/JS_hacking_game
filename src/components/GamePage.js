@@ -6,9 +6,7 @@ const GamePage = () => {
 
     return (
         <div>
-            <h1>게임페이지</h1>
-            <Canvas></Canvas>
-            
+            <Canvas></Canvas>            
         </div>
     );
 }
