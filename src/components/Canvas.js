@@ -1,10 +1,13 @@
 import React, {useEffect, createRef} from 'react';
+import io from 'socket.io-client';
+
 
 const Canvas = () => {
         // 디스플레이 사이즈 지정
         const displayWidth = window.innerWidth > 0 ? window.innerWidth : 0;
         const displayHeight = window.innerHeight > 0 ? window.innerHeight : 0;
         const circleDist = displayHeight / 7;
+        const socket = io.connect('http://localhost:5000');
 
         let drawCircle = (ctx, radius) => {
             ctx.strokeStyle = '#ffffff';
@@ -23,8 +26,6 @@ const Canvas = () => {
                 ctx.fillRect(position.x - 7, position.y - 7, 15, 15);
             }
             
-            
-
         }
     
         let flag = false;
@@ -57,6 +58,15 @@ const Canvas = () => {
                 flag = !flag;
             }, 1000)
         }, []);
+
+
+        // 소켓 연결용
+        useEffect(()=> {
+            socket.on("connectionChk", ()=> {console.log('connected');});
+        }, []);
+        
+        
+
 
     return (
         <div>
