@@ -8,6 +8,8 @@ const Canvas = () => {
         const displayHeight = window.innerHeight > 0 ? window.innerHeight : 0;
         const circleDist = displayHeight / 7;
         const socket = io.connect('http://localhost:5000');
+        let clientX = 1;
+        let clientY = 1;
 
         let drawCircle = (ctx, radius) => {
             ctx.strokeStyle = '#ffffff';
@@ -50,7 +52,9 @@ const Canvas = () => {
            
                 
     
-                drawPosition(ctx, {x:displayWidth/2, y:displayHeight/2});
+                drawPosition(ctx, {x:displayWidth/2 * (clientX), y:displayHeight/2 * (clientY)});
+                console.log(displayWidth/2, displayHeight/2);
+                console.log(displayWidth/2 * (clientX), displayHeight/2 * (clientY));
 
             }, 0);
 
@@ -65,6 +69,12 @@ const Canvas = () => {
             socket.on("connectionChk", ()=> {console.log('connected');});
         }, []);
         
+        useEffect(() => {
+            socket.on('getPosition', (data) => {
+                clientX = clientX + (data.x / 5);
+                clientY = clientY - (data.z / 5);
+            });
+        }, []);
         
 
 

@@ -10,7 +10,7 @@ let model = null;
 let controller = null;
 let playerVector = null;
 let exportValue = null;
-const socket = io.connect("http://1d6d078a5d4e.ngrok.io/");
+const socket = io.connect("https://8eca19f264bf.ngrok.io");
 
 const initScene = (gl, session) => {
   //-- scene, camera(threeJs의 카메라, 씬 설정)
@@ -162,7 +162,7 @@ function onSessionEnded(event) {
   gl = null;
 }
 
-function placeObject() {
+async function placeObject() {
   if (model && controller) {
     const x = -Math.ceil(Math.random() * 5) + 5;
     const y = Math.ceil(Math.random() + 1);
@@ -171,7 +171,7 @@ function placeObject() {
     model.quaternion.setFromRotationMatrix(controller.matrixWorld);
     //model position -> model.position
     //user position -> playerVector
-    exportValue = {
+    exportValue = await {
       x: model.position.x - playerVector.x,
       z: model.position.z - playerVector.z,
     };
@@ -179,7 +179,7 @@ function placeObject() {
 
     scene.add(model);
     controller.removeEventListener("select", placeObject);
-    socket.emit("getPosition", exportValue);
+    await socket.emit("getPosition", exportValue);
   }
 }
 
